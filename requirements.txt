@@ -1,0 +1,11 @@
+discord.py
+
+cryptography
+
+requests
+
+Pillow
+
+psutil
+
+selenium
