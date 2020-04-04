@@ -209,7 +209,7 @@ async def on_command_error(ctx, error):
 
 
 while True:
-	try:
-		bot.loop.run_until_complete(bot.run(token))
-	except BaseException:
-		time.sleep(5)
+    try:
+	    bot.loop.run_until_complete(bot.run(token))
+    except BaseException:
+	    time.sleep(5)
