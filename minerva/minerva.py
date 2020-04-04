@@ -142,6 +142,6 @@ async def help(ctx):
     
 while True:
     try:
-        bot.run(token)
+        bot.loop.run_until_complete(bot.run(token))
     except BaseException:
         time.sleep(10)
