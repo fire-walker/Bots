@@ -54,6 +54,8 @@ bot.join_kick_msg = 'You have been kicked due to verification faliure or the lac
 bot.join_fin_msg = 'Succesfully verified. You can now access the server.'
 bot.join_role = 'Member'
 bot.join_msg = 'This is the rule thing mate'
+bot.join_time_lim = 20
+bot.user_verification = False
 
 # the on ready event
 @bot.event
@@ -62,11 +64,14 @@ async def on_ready():
         return
     print("Minerva is ready sir.")
     bot.is_startup = False
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"to .help"))
    
     
 # new user verification
 @bot.event
 async def on_member_join(user):
+    if bot.user_verification == False:
+        return
     letters = string.ascii_lowercase
     join_pass = ''.join(random.choice(letters) for i in range(5))
     
@@ -83,7 +88,7 @@ async def on_member_join(user):
             return True
     
     try:
-        await bot.wait_for('message', check=check, timeout=600)
+        await bot.wait_for('message', check=check, timeout=bot.join_time_lim*60 )
     except asyncio.exceptions.TimeoutError:
         
         await user.send(bot.join_kick_msg)
@@ -104,7 +109,8 @@ async def purge(ctx, num):
 @bot.command()
 async def edit(ctx, variable):
     try:
-        embed = discord.Embed(title=variable, colour=discord.Colour(0xeaa289), description=f"Edit as you please and reply with the final draft```{getattr(bot, variable)}```")
+        embed = discord.Embed(title=variable, colour=discord.Colour(0xeaa289), description="Please send the new variable you wish to replce the one stated below")
+        embed.add_field(name="Variable value", value=f"```{getattr(bot, variable)}```")
         await ctx.send(embed=embed)
     except AttributeError:
         await ctx.send('Syntax Error')    
@@ -114,9 +120,9 @@ async def edit(ctx, variable):
                 return True
 
         try:
-            message = await bot.wait_for('message', check=check, timeout=1000)
+            message = await bot.wait_for('message', check=check, timeout=120)
         except asyncio.exceptions.TimeoutError:
-            return
+            await ctx.send("Feedback time limit reached. Please try again, or don't")
         else:
             setattr(bot, variable, message.content)
             await ctx.send('Sucessfully edited')
@@ -127,15 +133,83 @@ async def edit(ctx, variable):
 @bot.command()
 async def stats(ctx):
     await ctx.send('Fuck your stats.')
+    
+# user join verification
+@bot.command(name='user-verification')
+async def verif(ctx, bool):
+    if bool.lower() == 'activate':
+        if bot.user_verification == True:
+            await ctx.send('User verification was already active.')
+        else:
+            bot.user_verification = True
+            await ctx.send('User verification successfully activated.')
+            
+    elif bool.lower() == 'deactivate':
+        if bot.user_verification == False:
+            await ctx.send('User verification was already not in function.')
+        else:
+            bot.user_verification = False
+            await ctx.send('User verification deactivated')
+        
+    else:
+        temp = await ctx.send('syntax error')
+        temp.delete(delay=5)
+        
 
 
 bot.remove_command('help')
 @bot.command(name='help')
-async def help(ctx):
-    embed = discord.Embed(title='*Commands*', colour=discord.Colour(0xeaa289), description=f"")
-    embed.add_field(name="somesome", value="somesome", inline=True)
-    embed.add_field(name="some", value="thing", inline=True)
-    await ctx.send(embed=embed)
+async def help(ctx, var=None):
+    if var == None:
+        embed = discord.Embed(title='FUNCTION LIST', colour=discord.Colour(0xeaa289), description=f"```The current prefix is '.', type '<prefix>help <function>' to get more info about variables of commands```")
+        embed.add_field(name="Variables", value="```\njoin_kick_msg\njoin_fin_msg\njoin_role\njoin_msg\njoin_time_lim```")
+        embed.add_field(name="Commands", value="```purge (num)\nedit (variable)\nuser-verification (de/activate)\n```")
+        await ctx.send(embed=embed)
+        
+    elif var == 'join_kick_msg':
+        embed = discord.Embed(title='**join_kick_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the message sent through DM when a new user fails or takes too much time to complete the server entrance verification within the given time limit, which is attributed to the variable `join_time_lim`.")   
+        embed.add_field(name="Usage example", value="```<prefix>edit join_kick_msg <message>```", inline=False)
+        await ctx.send(embed=embed)
+    
+    elif var == 'join_fin_msg':
+        embed = discord.Embed(title='**join_fin_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the message sent through DM when a new user successfully completes the server entrance verification.")   
+        embed.add_field(name="Usage example", value="```<prefix>edit join_fin_msg <message>```", inline=False)
+        await ctx.send(embed=embed)
+
+    elif var == 'join_role':
+        embed = discord.Embed(title='**join_role**', colour=discord.Colour(0xeaa289), description=f"This variable is the role given to a new user who just finished server entrance verification. In usage please be mindful of role letter case.")   
+        embed.add_field(name="Usage example", value="```<prefix>edit join_role <role>```", inline=False)   
+        await ctx.send(embed=embed)
+        
+    elif var == 'join_msg':
+        embed = discord.Embed(title='**join_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the role given to a new user who just finished server entrance verification. In usage please be mindful of role letter case.")   
+        embed.add_field(name="Usage example", value="```<prefix>edit join_msg <msg>```", inline=False)   
+        await ctx.send(embed=embed)
+    
+    elif var == 'join_time_lim':
+        embed = discord.Embed(title='**join_time_lim**', colour=discord.Colour(0xeaa289), description=f"This variable is the given for a user to complete the server entrance verification")   
+        embed.add_field(name="Usage example", value="```<prefix>edit join_time_lim <mins>```", inline=False)   
+        await ctx.send(embed=embed)
+        
+    elif var == 'purge':
+        embed = discord.Embed(title='**purge**', colour=discord.Colour(0xeaa289), description=f"This command purges messages as per the number you supply")   
+        embed.add_field(name="Usage example", value="```<prefix>purge <number>```", inline=False)   
+        await ctx.send(embed=embed)
+    
+    elif var == 'edit':
+        embed = discord.Embed(title='**edit**', colour=discord.Colour(0xeaa289), description=f"This command is used to edit the custom variables that appear on the command `help`.")   
+        embed.add_field(name="Usage example", value="```<prefix>edit <variable>```", inline=False)   
+        await ctx.send(embed=embed)
+        
+    elif var == 'user-verification':
+        embed = discord.Embed(title='**edit**', colour=discord.Colour(0xeaa289), description=f"This command activates or deactivates the new user verification option. Activating this requires you to pre set the variables beginning with `join_`.")   
+        embed.add_field(name="Usage example", value="```<prefix>user-verification <activate/deactivate>```", inline=False)   
+        await ctx.send(embed=embed)
+    
+    else:
+        temp = await ctx.send('syntax error')
+        temp.delete(delay=5)
+    
     
     
     
