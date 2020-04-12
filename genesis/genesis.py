@@ -114,16 +114,20 @@ async def check():
             if j[1] in range(int(time.strftime('%d')) + 1, int(time.strftime('%d')) + 8) and j[0] == int(time.strftime('%m')):
                 date = datetime.datetime(datetime.date.today().year, j[0], j[1]).strftime('%A')
                 nlthing.append(f"{firstletter(i)}'s birthday is next {date}")
+                
 
         try:
             nlthing
         except NameError:
             pass
         else:
-            out = '\n'.join(nlthing)
-            embed = discord.Embed(title=f"Birthdays this week", description=out , colour=discord.Colour(0xc64170))
-            await channel.send(embed=embed)
-            del nlthing
+            if nlthing == '':
+                pass
+            else:
+                out = '\n'.join(nlthing)
+                embed = discord.Embed(title=f"Birthdays this week", description=out , colour=discord.Colour(0xc64170))
+                await channel.send(embed=embed)
+                del nlthing
 
     for i,j in dthing.items():
         if j[1] == int(time.strftime('%d')) + 1 and j[0] == int(time.strftime('%m')):
@@ -324,9 +328,7 @@ async def stats(ctx):
     with open('jthing.json', 'r') as file:
         dthing = json.load(file)
 
-    x = 0
-    for i in dthing.items():
-        x += 1
+    x = len(dthing.keys())
 
     run_time = int(time_func() - bot.timee)
     last = list(dthing.items())[-1][0]
