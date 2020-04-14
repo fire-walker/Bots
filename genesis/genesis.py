@@ -127,7 +127,7 @@ async def check():
                 out = '\n'.join(nlthing)
                 embed = discord.Embed(title=f"Birthdays this week", description=out , colour=discord.Colour(0xc64170))
                 await channel.send(embed=embed)
-                del nlthing
+                del nlthing, dthing
 
     for i,j in dthing.items():
         if j[1] == int(time.strftime('%d')) + 1 and j[0] == int(time.strftime('%m')):
