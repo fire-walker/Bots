@@ -64,7 +64,7 @@ async def on_ready():
         return
     print("Minerva is ready sir.")
     bot.is_startup = False
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"to .help"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f".help"))
    
     
 # new user verification
@@ -75,13 +75,15 @@ async def on_member_join(user):
     letters = string.ascii_lowercase
     join_pass = ''.join(random.choice(letters) for i in range(5))
     
-    message = f"Hello, {user.nick}\n{bot.join_msg}"
-    word_list = message.split(' ')
+    word_list = bot.join_msg.split(' ')
     word = random.randint(int(len(word_list)/2), len(word_list) - 2)
     word_list.insert(word, f'pass is: {join_pass}')
+    
+    head = f"Hello, {user.name}"
     message = ' '.join(word_list)
     
-    await user.send(message)   
+    embed = discord.Embed(title=head, colour=discord.Colour(0xeaa289), description=message)
+    await user.send(embed=embed)   
 
     def check(m):
         if m.content == join_pass:
@@ -109,7 +111,7 @@ async def purge(ctx, num):
 @bot.command()
 async def edit(ctx, variable):
     try:
-        embed = discord.Embed(title=variable, colour=discord.Colour(0xeaa289), description="Please send the new variable you wish to replce the one stated below")
+        embed = discord.Embed(title=variable, colour=discord.Colour(0xeaa289), description="Please send the new variable you wish to replace the one stated below")
         embed.add_field(name="Variable value", value=f"```{getattr(bot, variable)}```")
         await ctx.send(embed=embed)
     except AttributeError:
@@ -182,7 +184,7 @@ async def help(ctx, var=None):
         await ctx.send(embed=embed)
         
     elif var == 'join_msg':
-        embed = discord.Embed(title='**join_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the role given to a new user who just finished server entrance verification. In usage please be mindful of role letter case.")   
+        embed = discord.Embed(title='**join_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the message sent when a user newly joins the server. This is the message the verification password is hidden. Most usually this message is made up of a rule set.")   
         embed.add_field(name="Usage example", value="```<prefix>edit join_msg <msg>```", inline=False)   
         await ctx.send(embed=embed)
     
