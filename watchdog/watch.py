@@ -111,21 +111,6 @@ async def checker():
         bot.post_num += 1
 
 
-# the national corona virus report
-@tasks.loop(minutes=1, count=None)
-async def corona_checker():
-    if strftime('%H:%M', gmtime()) == '18:30':
-        for i in bot.get_guild(646638903503224833).text_channels:
-            if i.name == 'corona':
-                channel = i
-
-        d = strftime('%d', gmtime())
-        m = strftime('%m', gmtime())
-        url = f'http://epid.gov.lk/web/images/pdf/corona_virus_report/sitrep-sl-en-{d}-{m}_10.pdf'
-
-        await channel.send(url)
-
-
 # grab the data from roar
 @tasks.loop(minutes=1, count=None)
 async def roar_checker():
@@ -141,7 +126,7 @@ async def roar_checker():
         driver.get('https://roar.media/english/life/reports/live-updates-coronavirus-outbreak')
 
         time.sleep(20)
-        image = driver.find_element_by_xpath('/html/body/div/div[1]/div[3]/div/div[2]/div[1]/div[3]/div[1]/p[2]/div').get_attribute('src')
+        image = driver.find_element_by_xpath('/html/body/div/div[1]/div[3]/div/div[4]/div[1]/div[3]/div[1]/p[2]/div').get_attribute('src')
         driver.quit()
 
         r = requests.get(image, stream=True, headers={'User-agent': 'Mozilla/5.0'})
@@ -176,7 +161,6 @@ async def on_ready():
     bot.post_num = 3640
     bot.req_num = 0
     checker.start()
-    corona_checker.start()
     roar_checker.start()
     bot.is_startup = False
 
