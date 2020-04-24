@@ -50,8 +50,8 @@ bot = commands.Bot(command_prefix='.')
 
 # custom variables
 bot.is_startup = True
-bot.join_kick_msg = 'You have been kicked due to verification faliure or the lack of a response.'
-bot.join_fin_msg = 'Succesfully verified. You can now access the server.'
+bot.join_kick_msg = 'You have been kicked due to verification failure or the lack of a response.'
+bot.join_fin_msg = 'Successfully verified. You can now access the server.'
 bot.join_role = 'Member'
 bot.join_msg = 'This is the rule thing mate'
 bot.join_time_lim = 20
