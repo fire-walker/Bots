@@ -115,7 +115,7 @@ async def edit(ctx, variable):
         embed.add_field(name="Variable value", value=f"```{getattr(bot, variable)}```")
         await ctx.send(embed=embed)
     except AttributeError:
-        await ctx.send('Syntax Error')    
+        return
     else:
         def check(m):
             if m.author == ctx.author and m.channel == ctx.channel:
@@ -152,69 +152,93 @@ async def verif(ctx, bool):
         else:
             bot.user_verification = False
             await ctx.send('User verification deactivated')
-        
+    
     else:
-        temp = await ctx.send('syntax error')
-        temp.delete(delay=5)
+        raise AttributeError
         
+        
+@bot.command()
+async def check(ctx, variable):
+    embed = discord.Embed(title=variable, colour=discord.Colour(0xeaa289))
+    embed.add_field(name="Variable value", value=f"```{getattr(bot, variable)}```")
+    await ctx.send(embed=embed)
 
 
 bot.remove_command('help')
 @bot.command(name='help')
 async def help(ctx, var=None):
     if var == None:
-        embed = discord.Embed(title='FUNCTION LIST', colour=discord.Colour(0xeaa289), description=f"```The current prefix is '.', type '<prefix>help <function>' to get more info about variables of commands```")
+        embed = discord.Embed(title='FUNCTION LIST', colour=discord.Colour(0xeaa289), description=f"```The current prefix is '.'\nType 'help <function/variable>' to get more info about variables or commands```")
         embed.add_field(name="Variables", value="```\njoin_kick_msg\njoin_fin_msg\njoin_role\njoin_msg\njoin_time_lim```")
-        embed.add_field(name="Commands", value="```purge (num)\nedit (variable)\nuser-verification (de/activate)\n```")
+        embed.add_field(name="Commands", value="```purge (num)\nedit (variable)\ncheck (variable)\nuser-verification (de/activate)\n```")
         await ctx.send(embed=embed)
         
     elif var == 'join_kick_msg':
         embed = discord.Embed(title='**join_kick_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the message sent through DM when a new user fails or takes too much time to complete the server entrance verification within the given time limit, which is attributed to the variable `join_time_lim`.")   
-        embed.add_field(name="Usage example", value="```<prefix>edit join_kick_msg <message>```", inline=False)
+        embed.add_field(name="Usage example", value="```edit join_kick_msg <message>```", inline=False)
         await ctx.send(embed=embed)
     
     elif var == 'join_fin_msg':
         embed = discord.Embed(title='**join_fin_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the message sent through DM when a new user successfully completes the server entrance verification.")   
-        embed.add_field(name="Usage example", value="```<prefix>edit join_fin_msg <message>```", inline=False)
+        embed.add_field(name="Usage example", value="```edit join_fin_msg <message>```", inline=False)
         await ctx.send(embed=embed)
 
     elif var == 'join_role':
         embed = discord.Embed(title='**join_role**', colour=discord.Colour(0xeaa289), description=f"This variable is the role given to a new user who just finished server entrance verification. In usage please be mindful of role letter case.")   
-        embed.add_field(name="Usage example", value="```<prefix>edit join_role <role>```", inline=False)   
+        embed.add_field(name="Usage example", value="```edit join_role <role>```", inline=False)   
         await ctx.send(embed=embed)
         
     elif var == 'join_msg':
         embed = discord.Embed(title='**join_msg**', colour=discord.Colour(0xeaa289), description=f"This variable is the message sent when a user newly joins the server. This is the message the verification password is hidden. Most usually this message is made up of a rule set.")   
-        embed.add_field(name="Usage example", value="```<prefix>edit join_msg <msg>```", inline=False)   
+        embed.add_field(name="Usage example", value="```edit join_msg <msg>```", inline=False)   
         await ctx.send(embed=embed)
     
     elif var == 'join_time_lim':
         embed = discord.Embed(title='**join_time_lim**', colour=discord.Colour(0xeaa289), description=f"This variable is the given for a user to complete the server entrance verification")   
-        embed.add_field(name="Usage example", value="```<prefix>edit join_time_lim <mins>```", inline=False)   
+        embed.add_field(name="Usage example", value="```edit join_time_lim <mins>```", inline=False)   
         await ctx.send(embed=embed)
         
     elif var == 'purge':
         embed = discord.Embed(title='**purge**', colour=discord.Colour(0xeaa289), description=f"This command purges messages as per the number you supply")   
-        embed.add_field(name="Usage example", value="```<prefix>purge <number>```", inline=False)   
+        embed.add_field(name="Usage example", value="```purge <number>```", inline=False)   
         await ctx.send(embed=embed)
     
     elif var == 'edit':
         embed = discord.Embed(title='**edit**', colour=discord.Colour(0xeaa289), description=f"This command is used to edit the custom variables that appear on the command `help`.")   
-        embed.add_field(name="Usage example", value="```<prefix>edit <variable>```", inline=False)   
+        embed.add_field(name="Usage example", value="```edit <variable>```", inline=False)   
+        await ctx.send(embed=embed)
+
+    elif var == 'check':
+        embed = discord.Embed(title='**check**', colour=discord.Colour(0xeaa289), description=f"This command is used to check or view the current value of a variable.")   
+        embed.add_field(name="Usage example", value="```check <variable>```", inline=False)   
         await ctx.send(embed=embed)
         
     elif var == 'user-verification':
         embed = discord.Embed(title='**edit**', colour=discord.Colour(0xeaa289), description=f"This command activates or deactivates the new user verification option. Activating this requires you to pre set the variables beginning with `join_`.")   
-        embed.add_field(name="Usage example", value="```<prefix>user-verification <activate/deactivate>```", inline=False)   
+        embed.add_field(name="Usage example", value="```user-verification <activate/deactivate>```", inline=False)   
         await ctx.send(embed=embed)
     
     else:
-        temp = await ctx.send('syntax error')
-        temp.delete(delay=5)
+        raise AttributeError
     
     
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Missing Arguments")
+        return
+        
+    elif isinstance(error, commands.CommandInvokeError):
+        await ctx.send("Syntax Error")
+        return
+
+    elif isinstance(error, commands.CommandNotFound):
+        await ctx.send('Command not found')
+        return
     
-    
+    raise error
+        
     
 while True:
     try:

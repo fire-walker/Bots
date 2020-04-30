@@ -357,10 +357,7 @@ def finale():
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
-        for i in bot.get_guild(646638903503224833).text_channels:
-            if i.name == 'death':
-                channel = i
-        await channel.send("Syntax error")
+        await ctx.send("Syntax error")
 
 
 
