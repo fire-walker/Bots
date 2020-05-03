@@ -156,7 +156,7 @@ async def verif(ctx, bool):
     else:
         raise AttributeError
         
-        
+# checking the currently set custom variables
 @bot.command()
 async def check(ctx, variable):
     embed = discord.Embed(title=variable, colour=discord.Colour(0xeaa289))
