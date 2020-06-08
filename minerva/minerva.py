@@ -46,7 +46,7 @@ while 1 == 1:
 
 
 
-bot = commands.Bot(command_prefix='.')
+bot = commands.Bot(command_prefix='./')
 
 # custom variables
 bot.is_startup = True
@@ -64,7 +64,7 @@ async def on_ready():
         return
     print("Minerva is ready sir.")
     bot.is_startup = False
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f".help"))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"./help"))
    
     
 # new user verification
@@ -168,7 +168,7 @@ bot.remove_command('help')
 @bot.command(name='help')
 async def help(ctx, var=None):
     if var == None:
-        embed = discord.Embed(title='FUNCTION LIST', colour=discord.Colour(0xeaa289), description=f"```The current prefix is '.'\nType 'help <function/variable>' to get more info about variables or commands```")
+        embed = discord.Embed(title='FUNCTION LIST', colour=discord.Colour(0xeaa289), description=f"```The current prefix is './'\nType 'help <function/variable>' to get more info about variables or commands```")
         embed.add_field(name="Variables", value="```\njoin_kick_msg\njoin_fin_msg\njoin_role\njoin_msg\njoin_time_lim```")
         embed.add_field(name="Commands", value="```purge (num)\nedit (variable)\ncheck (variable)\nuser-verification (de/activate)\n```")
         await ctx.send(embed=embed)

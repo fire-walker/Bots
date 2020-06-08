@@ -54,7 +54,7 @@ class glago(commands.Cog):
         if platform == 'win32':
             font_file_path = r'‪C:\Windows\Fonts\euglag8.ttf'
         else: 
-            font_file_path = r'‪/usr/share/fonts/truetype/custom/glag.ttf'
+            font_file_path = r'‪cogs/glag.tff'
 
         glag = ImageFont.truetype(font_file_path, size=60, encoding="unic")
         text = text.upper()
