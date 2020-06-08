@@ -56,11 +56,10 @@ class glago(commands.Cog):
         # sze = img.size
 
         if platform == 'win32':
-            font_file_path = r'‪C:\Windows\Fonts\euglag8.ttf'
+            glag = ImageFont.truetype(r'C:\Windows\Fonts\glag.ttf', size=60, encoding="unic")
         else: 
-            font_file_path = r'‪glag.ttf'
+            glag = ImageFont.truetype(r'glag.ttf', size=60, encoding="unic")
 
-        glag = ImageFont.truetype(font_file_path, size=60, encoding="unic")
         text = text.upper()
         lines = text_wrap(text, glag, 650)
 
