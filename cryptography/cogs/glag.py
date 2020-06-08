@@ -45,8 +45,12 @@ class glago(commands.Cog):
     @commands.command()
     async def glag(self, ctx, text):
         await ctx.channel.send("Processing...")
-        downloadImage(r'https://imgur.com/XpWe0Dp.png', 'cogs/glag.png')
-        img = Image.open('cogs/glag.png')
+        
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        os.chdir(dir_path)
+
+        downloadImage(r'https://i.imgur.com/XpWe0Dp.png', 'glag.png')
+        img = Image.open('glag.png')
 
         d = ImageDraw.Draw(img)
         # sze = img.size
@@ -54,7 +58,7 @@ class glago(commands.Cog):
         if platform == 'win32':
             font_file_path = r'‪C:\Windows\Fonts\euglag8.ttf'
         else: 
-            font_file_path = r'‪cogs/glag.ttf'
+            font_file_path = r'‪glag.ttf'
 
         glag = ImageFont.truetype(font_file_path, size=60, encoding="unic")
         text = text.upper()
@@ -87,10 +91,10 @@ class glago(commands.Cog):
                 d.text((x, y), line, fill=(207, 203, 225), font=glag)
                 y = y + line_height
 
-            img.save('cogs/some.png', optimize=True)
-            await ctx.channel.send(file=discord.File('cogs/some.png'))
-            os.remove('cogs/some.png')
-            os.remove('cogs/glag.png')
+            img.save('some.png', optimize=True)
+            await ctx.channel.send(file=discord.File('some.png'))
+            os.remove('some.png')
+            os.remove('glag.png')
 
 
 def setup(bot):
