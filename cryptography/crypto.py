@@ -58,6 +58,7 @@ async def on_ready():
 
     await channel.send("Im back to hide stuff ya cunts")
     print("Cryptography bot is online again, Sir")
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f".help"))
 
 
 bot.remove_command('help')

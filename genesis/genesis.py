@@ -85,6 +85,7 @@ async def on_ready():
     print("Genesis is online again, Sir")
     bot.timee = time_func()
     bot.is_startup = False
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f".genesis help"))
 
 
 @tasks.loop(hours=24, count=None)

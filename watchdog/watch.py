@@ -58,7 +58,7 @@ while 1==1:
         print("Password verified")
         break
         
-bot = commands.Bot(command_prefix='.')
+bot = commands.Bot(command_prefix='->')
 bot.is_startup = True
 
 
@@ -163,6 +163,7 @@ async def on_ready():
     checker.start()
     roar_checker.start()
     bot.is_startup = False
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f"->help"))
 
 
 # respond to a .stats call
