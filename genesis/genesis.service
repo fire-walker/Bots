@@ -1,0 +1,14 @@
+# at /lib/systemd/system/genesis.service
+
+[Unit]
+Description=Genesis Service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python3 /home/someone/code/Bots/genesis/genesis.py > /home/someone/gen.log
+User=someone
+WorkingDirectory=/home/someone/code/Bots/genesis/
+
+[Install]
+WantedBy=multi-user.target

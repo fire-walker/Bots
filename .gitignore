@@ -2,3 +2,4 @@
 *.ini
 *.pyc
 .vscode/sftp.json
+*.json
