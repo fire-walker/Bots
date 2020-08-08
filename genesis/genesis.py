@@ -54,7 +54,7 @@ def alg(password):
 
 
 while 1 == 1:
-    data = 'gAAAAABeGc-yfAebRV4I8RYJFfVmEReaS261SY8E6cb-W1Xs__-Qypf99uOPuQgMScXPDhzKWis7jATVKRgNOtOLmonNt7TbQqzyzztk7naBBCJpoiD5bmONacrUIkYCC7kNGDRtx69duyf98nnxVGipZ0M2C697Jw=='
+    data = 'gAAAAABfLsGDUKmxmtSWoVp0bakXXqJTUA8dvVg5QrgQ0BRKvD4r3dbOOIjKzw7cXTDF8q73g8uCPT6FeUNYieZlOb5pArStRqHXfISxeNNIq2PmGh_xGDvF1J7-g_AeUtPu28tQoMfG-UI3tyM3rJdIoC59aKD4ug=='
     password = getpass.getpass('Input password: ')
     data = data.encode('utf-8')
     password = password.encode('utf-8')
@@ -374,8 +374,5 @@ async def on_command_error(ctx, error):
                 channel = i
         await channel.send("Syntax error")
 
-while True:
-	try:
-		bot.loop.run_until_complete(bot.run(token))
-	except BaseException:
-		time.sleep(5)
+
+bot.run(token)
