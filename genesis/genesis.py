@@ -147,19 +147,19 @@ Okay, let's see what we've got here now.
 
 
 add:
-    .origin add 'name' 'mm/dd'
+    .genesis add 'name' 'mm/dd'
 
 delete:
-    .origin remove 'name'
+    .genesis remove 'name'
     
 stats:
-    .origin stats
+    .genesis stats
     
 records:
-    .origin records
+    .genesis records
 
 edit:
-    .origin edit 'name'
+    .genesis edit 'name'
     
 ```""")
 
