@@ -6,9 +6,9 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python3 /home/someone/code/Bots/genesis/genesis.py > /home/someone/backups/genesis/genesis.log
+ExecStart=/usr/bin/python3 $HOME/code/Bots/genesis/genesis.py > $HOME/backups/genesis/genesis.log
 User=someone
-WorkingDirectory=/home/someone/backups/genesis/
+WorkingDirectory=$HOME/backups/genesis/
 
 [Install]
 WantedBy=multi-user.target
